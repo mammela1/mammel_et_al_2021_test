@@ -1,5 +1,5 @@
 ---
-title: "Single chromosome containing micronuclei rupture frequency (fig. 1D)"
+title: "Figure 1 graphs: Micronucleated chromosome length and gene density correlate with membrane rupture"
 author: "Anna Mammel"
 date: "11/5/2020"
 output: html_document
@@ -13,7 +13,7 @@ opts_knit$set(root.dir = "/Users/amammel/Hatch lab projects/mammel_et_al_2021_te
 
 <br>
 
-Code for generating Fig. 1D and H 
+### Fig. 1D 
 
 ```{r, include=TRUE, message= FALSE, warning= FALSE}
 
@@ -23,13 +23,9 @@ Code for generating Fig. 1D and H
 
 #Example > install.packages("knitr")
 
-
-library(knitr)
-library(dplyr)
-library(readr)
 library(tidyverse)
-library(ggplot2)
 library(readxl)
+library(ggrepel)
 ```
 
 <br>
@@ -44,9 +40,9 @@ MN_24h_pooled is the pooled rupture frequency for all replicates
 
 ```{r, include = TRUE}
 
-MN_24h <- read_xlsx("RPE1_reversine_24h_MN_data.xlsx", sheet = 1)
+MN_24h <- read_xlsx("Mammel_et_al_2021_figure1_data.xlsx", sheet = 1)
 
-MN_24h_pooled <- read_xlsx("RPE1_reversine_24h_MN_data.xlsx", sheet = 2)
+MN_24h_pooled <- read_xlsx("Mammel_et_al_2021_figure1_data.xlsx", sheet = 2)
 
 ```
 
@@ -159,4 +155,159 @@ rupture_freq_plot_MN_24h
 
 ```{r, include=FALSE, message= FALSE, warning= FALSE}
 ggsave("RPE1_24hr_rupture_R_V1.png", plot = rupture_freq_plot_MN_24h, height = 3, width = 4, dpi=600)
+```
+
+<br>
+
+#### Chi-square
+
+```{r, include=TRUE, message= FALSE, warning= FALSE}
+
+MN_24h_intact_rupture <- MN_24h_pooled %>% 
+  select(intact:ruptured)
+
+chisq.test(MN_24h_intact_rupture)
+
+```
+
+
+**Note: Similar ggplot and statistics were used for Fig. 1E, H, I, and J. Data included:**
+
+ - Fig. 1E = Sheet 3 (replicate) & 4 (pooled)
+ - Fig. 1I = Sheet 6 (replicate) & 7 (pooled)
+ - Fig. 1J = Sheet 8 (replicate) & 9 (pooled)
+
+<br>
+<br>
+
+----
+
+### Fig. 1F and G
+
+Dataset includes chromosome feature information
+```{r, include = TRUE}
+
+chr_gene <- read_xlsx("Mammel_et_al_2021_figure1_data.xlsx", sheet = 5)
+
+```
+
+<br>
+
+#### Graph themes 
+
+```{r, include=TRUE, message= FALSE, warning= FALSE}
+
+my_theme_2 <- theme(axis.text.x	= element_text(size= 12, color = "black", family = "sans"),
+        axis.text.y	= element_text(size=12, color = "black", family = "sans"),
+        text=element_text(size = 12, family="sans"),
+        axis.ticks= element_line(color = "black"),
+        strip.background = element_blank(),
+        legend.position = c(1,1),
+        legend.justification = c(1.1, 0.8),
+        legend.title = element_text(size = 11),
+        legend.background = element_blank(),
+        legend.key.size = unit(0.2, "cm"),
+        strip.text.x = element_blank())
+
+
+my_theme_3 <- theme(axis.text.x	= element_text(size=12, color = "black", 
+                                               family = "sans"),
+        axis.text.y	= element_text(size=12, color = "black", family = "sans"),
+        text=element_text(size = 12, family="sans"),
+        axis.ticks= element_line(color = "black"),
+        strip.background = element_blank(),
+        legend.position = c(0,1),
+        legend.justification = c(0, 0.8),
+        legend.title = element_text(size = 11),
+        legend.background = element_blank(),
+        legend.key.size = unit(0.2, "cm"),
+        strip.text.x = element_blank())
+```
+
+<br>
+
+#### Chromosome size correlates with rupture frequency plot
+
+Controlling for gene density and comparing (20 - 24 genes/Mbp) chromosomes
+
+```{r, include=TRUE, message= FALSE, warning= FALSE}
+
+chr_gene_V2 <- chr_gene %>% 
+  filter(gene_range == "20-24")
+
+```
+
+
+```{r, include=TRUE, message= FALSE, warning= FALSE, fig.width = 3, fig.height= 3, fig.align="center"}
+
+rupture_freq_size_plot <- 
+  ggplot() +
+  geom_point(data = chr_gene, size = 1, aes(group = gene_range, 
+                                            x = chromosome_size_bp*1e-06, 
+                       y = pooled, color = gene_range)) +
+  geom_smooth(method = "glm", se = F, size = 0.5,show.legend = FALSE, 
+              aes(x = chr_gene_V2$chromosome_size_bp*1e-06, 
+                       y = chr_gene_V2$pooled, color = chr_gene_V2$gene_range)) +
+  ylab('Intact MN proportion') +
+  scale_y_continuous(expand = c(0,0),breaks = seq(0.2, 1, 0.1), 
+                     limits = c(0.2,1)) +
+  scale_x_continuous(name = "Chromosome Length (Mb)", expand = c(0,0), 
+                     limits = c(0, 270)) +
+  theme_classic() +
+  geom_text_repel(aes(label = chr_gene$Chromosome, 
+                      x = chr_gene$chromosome_size_bp*1e-06, 
+                       y = chr_gene$pooled), color = "black", size = 3.5,
+                  box_padding = 0.15) +
+  scale_color_manual(values = c("dark gray","black","#269bd2", "#cb4b16"), 
+                     name = "Gene/Mb") +
+  my_theme_2
+  
+rupture_freq_size_plot
+```
+
+```{r, include=TRUE, message= FALSE, warning= FALSE, fig.width = 1.75, fig.height= 1.75, fig.align="center"}
+ggsave("rupture_freq_size_plot_V4.png", plot = rupture_freq_size_plot, units="in", dpi=600)
+```
+
+<br>
+
+#### Gene Density correlates with rupture frequency plot
+
+Controlling for chromosome size and comparing small (50 - 99 Mbp) chromosomes
+
+```{r, include=TRUE, message= FALSE, warning= FALSE}
+chr_gene <- chr_gene %>% 
+  mutate(size_group = fct_reorder(size_group, chromosome_size_bp))
+
+chr_size_V1 <- chr_gene %>% 
+  filter(size_group == "50-99")
+```
+
+```{r, include=TRUE, message= FALSE, warning= FALSE, fig.width = 3, fig.height= 3, fig.align="center"}
+rupture_freq_gene_plot <- 
+  ggplot() +
+  geom_point(data = chr_gene, size = 1, aes(group = size_group, x = gene_Mb_2, 
+                    y = pooled, color = size_group)) +
+  stat_smooth(method = "glm",se = F, size = 0.5, show.legend = FALSE, 
+              aes(x = chr_size_V1$gene_Mb_2, y = chr_size_V1$pooled, 
+                  color = chr_size_V1$size_group)) +
+  ylab('Intact MN proportion') +
+  scale_y_continuous(expand = c(0,0), breaks = seq(0, 1, 0.1), 
+                     limits = c(0.2,1)) +
+  scale_x_continuous(name = "Gene Density (Genes/Mb)", 
+                     breaks = seq(0, 45, 5), limits = c(10,45), 
+                     expand = c(0,0)) +
+  theme_classic() +
+  geom_text_repel(aes(label = chr_gene$Chromosome, group = chr_gene$size_group, 
+                      x = chr_gene$gene_Mb_2, y = chr_gene$pooled), 
+                  color = "black", size = 3.5, box.padding = 0.15) +
+  scale_color_manual(values = c("#2aa198", "dark gray", "black"), 
+                     name = "Chr. Size (Mb)") +
+  my_theme_3
+  
+rupture_freq_gene_plot
+```
+
+```{r, include=FALSE, message= FALSE, warning= FALSE}
+ggsave("rupture_freq_gene_plot_V4.png", plot = rupture_freq_gene_plot,  units="in", dpi=600)
 ```
