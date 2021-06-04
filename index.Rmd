@@ -1,30 +1,37 @@
 ---
-title: "Making free websites with RStudio's R Markdown"
-author:  "[Julie Lowndes](https://github.com/jules32) at [NCEAS](https://www.nceas.ucsb.edu/), 12/14/16"
+title: "R scripts for 'Chromosome length and gene density contribute to micronuclear membrane stability'"
+author:  "[Anna Mammel](https://github.com/mammela1) post-doc in [Hatch Lab](https://research.fredhutch.org/hatch-lab/en/lab-members.html), 6/4/21"
 output:
   html_document:
-    fig_width: 1
+    fig_width: 0.5
 ---
 
 ----
 
-It's possible to create well-designed websites for free using [RStudio's R Markdown](http://rmarkdown.rstudio.com/) and hosting them on [Github](http://github.com). This is very new and incredibly cool. It is a really powerful way to communicate science using the same reproducible workflow you use for your analyses and collaborations.
-
-***Creating websites with R Markdown can be done without knowing R or HTML, CSS, etc,*** and that's where we'll start. However, R Markdown integrates with these tools so the more you know the more complex and beautiful your website can be. This tutorial borrows heavily from a lot of great tutorials and resources you should check out too -- there are links throughout. 
-
-The best way to learn is to follow along with your own laptop, but all are welcome. We'll spend half the time with the tutorial and half the time for you to work on your own website and get help. If you bring your laptop please do this beforehand: 
-
-1. install [RStudio](https://www.rstudio.com/products/rstudio/download/)
-1. create a [GitHub]((http://github.com)) account ([advice](http://happygitwithr.com/github-acct.html))
-1. set up your computer to talk to GitHub
-    - have RStudio linked directly (preferred) ([instructions sections 8-14](http://happygitwithr.com/hello-git.html))
-    - or install the [Desktop App](https://desktop.github.com/)
-    - or be familiar with git commands for the command line ([tutorial](https://try.github.io/levels/1/challenges/1))
+Micronuclei form around chromosome or chromosome fragments that missegergate during cell division. Micronuclei membranes' are unstable and frequently rupture causing DNA damage, innate immune signaling, and metastatic activation. In our recent [pre-print](https://www.biorxiv.org/content/10.1101/2021.05.12.443914v1) up on BioRxiv 'Chromosome length and gene density contribute to micronuclear membrane stability' we demonstrate that micronucleated chromosome length and gene density have additive effect on membrane stability. 
 
 ----
 
+The graphs were generated using [ggplot2](https://ggplot2.tidyverse.org/) and the data was analyzed using [dplyr](https://dplyr.tidyverse.org/), both are part of tidyverse. Both packages can be installed with:
 
-**Examples:**
+```
+install.packages("tidyverse")
+```
 
-We have been using R Markdown for the Ocean Health Index:  [**ohi-science.org/ohi-global**](http://ohi-science.org/ohi-global).  
-And R Markdown is much more than just websites -- here's a [**one-minute video about R Markdown**](http://rmarkdown.rstudio.com/lesson-1.html) to get you excited. 
+Additional packages used for graphics or statistics are noted in the figure tabs
+
+<br>
+
+**To recreate our graphs or reanalyze the data**
+ 
+ 1. Download the data sets of interest from the Hatch Lab github repository [Mammel_et_al_2021](https://github.com/hatch-lab/Mammel_etal_2021) under the "data" folder
+ 2. Follow the instructions and code in the figure tabs in R or RStudio
+ 3. R is open source so feel free to use or modify anything to fit your own data!
+
+----
+
+**Figure graphs**
+
+Figure 1:
+
+![](data/RPE1_24hr_rupture_R_V1.png){width=45%}

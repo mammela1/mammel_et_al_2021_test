@@ -157,4 +157,6 @@ rupture_freq_plot_MN_24h
 
 ```
 
-
+```{r, include=FALSE, message= FALSE, warning= FALSE}
+ggsave("RPE1_24hr_rupture_R_V1.png", plot = rupture_freq_plot_MN_24h, height = 3, width = 4, dpi=600)
+```
