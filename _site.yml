@@ -10,6 +10,8 @@ navbar:
       href: getting_sophisticated.html
     - text: "Your Turn"
       href: your_turn.html
+    - text: "Figure 1"
+      href: RPE1_reversine_chromosome_24h.html
 output_dir: "."
 output:
   html_document:
