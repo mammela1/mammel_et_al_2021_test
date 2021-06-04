@@ -10,7 +10,7 @@ output:
 
 Micronuclei form around chromosome or chromosome fragments that missegergate during cell division. Micronuclei membranes' are unstable and frequently rupture causing DNA damage, innate immune signaling, and metastatic activation. In our recent [pre-print](https://www.biorxiv.org/content/10.1101/2021.05.12.443914v1) up on BioRxiv 'Chromosome length and gene density contribute to micronuclear membrane stability' we demonstrate that micronucleated chromosome length and gene density have additive effect on membrane stability. 
 
-----
+<br>
 
 The graphs were generated using [ggplot2](https://ggplot2.tidyverse.org/) and the data was analyzed using [dplyr](https://dplyr.tidyverse.org/), both are part of tidyverse. Both packages can be installed with:
 
